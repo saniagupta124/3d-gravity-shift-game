@@ -1,29 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 
+/*
+ * Trigger zone that resets gravity to normal downward direction.
+ * Reorients player model and applies transition for smooth gravity shift.
+ */
 public class NormalGravity : MonoBehaviour
 {
     [SerializeField] ThirdPersonMovement movement;
     [SerializeField] GameObject playerModel;
 
+    private const float NORMAL_GRAVITY = -9.81f;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("NormalGravity Trigger Entered");
-
-            // Set gravity to normal (downward)
-            movement.gravity = -9.81f;
-
-            // Instantly reset vertical motion
+            movement.gravity = NORMAL_GRAVITY;
             movement.ResetVerticalVelocity();
-
-            // Optional: Give a small "kick" to start falling faster
             movement.ApplyGravityKick();
 
-            // Rotate the model upright
-            playerModel.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+            // Reset player orientation to upright
+            playerModel.transform.localRotation = Quaternion.identity;
         }
     }
 }

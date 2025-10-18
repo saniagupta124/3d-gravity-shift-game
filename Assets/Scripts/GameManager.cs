@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 
+/*
+ * Manages game state, resource tracking, and scene reloading.
+ * Tracks player collectibles and handles out-of-bounds scenarios.
+ */
 public class GameManager : MonoBehaviour
 {
     [SerializeField] GameObject player;
@@ -19,9 +23,9 @@ public class GameManager : MonoBehaviour
         bucketCountText.SetActive(false);
     }
 
-
     private void Update()
     {
+        // Show restart button if player falls out of bounds
         if (player.transform.position.y > 315f || player.transform.position.y < 13f)
         {
             button.SetActive(true);
@@ -29,7 +33,7 @@ public class GameManager : MonoBehaviour
         seedCountText.GetComponent<TextMeshProUGUI>().text = "seeds " + seedCount;
         bucketCountText.GetComponent<TextMeshProUGUI>().text = "buckets " + bucketCount;
     }
-    // Update is called once per frame
+
     public void RestartGame()
     {
         SceneManager.LoadScene("SampleScene");

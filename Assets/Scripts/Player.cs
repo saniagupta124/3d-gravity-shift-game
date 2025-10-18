@@ -1,16 +1,25 @@
 using UnityEngine;
 
+/*
+ * Manages player animation states and audio based on movement input.
+ * Syncs walking animation and footstep sounds with character movement.
+ */
 public class Player : MonoBehaviour
 {
-    public Animator animator; // Reference to Animator on the model
-    public ThirdPersonMovement movementScript; // Reference to movement script
-    public AudioSource walkAudio; // Reference to walking AudioSource
+    public Animator animator; 
+    public ThirdPersonMovement movementScript; 
+    public AudioSource walkAudio;
+
+    private const float WALK_THRESHOLD = 0.02f;
 
     void Update()
     {
-        bool isWalking = movementScript.direction.magnitude > 0.02f; // Small threshold to detect walking
+        bool isWalking = movementScript.direction.magnitude > WALK_THRESHOLD;
+
+        // Update animation state
         animator.SetBool("isWalking", isWalking);
 
+        // Sync footstep audio with movement
         if (isWalking)
         {
             if (!walkAudio.isPlaying)

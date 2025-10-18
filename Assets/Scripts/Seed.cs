@@ -1,25 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
-
+/*
+ * Collectible seed item that increments the player's seed count on interaction.
+ */
 public class Seed : MonoBehaviour
 {
     [SerializeField] GameObject interactionText;
     [SerializeField] GameManager manager;
+
     private bool counted = false;
 
     private void Start()
     {
-        interactionText.SetActive(false); // Hide on start
+        interactionText.SetActive(false); 
     }
 
     private void OnTriggerEnter(Collider other)
     {
         interactionText.SetActive(true);
-        
-        
     }
 
     private void OnTriggerStay(Collider other)
@@ -28,10 +28,9 @@ public class Seed : MonoBehaviour
         {
             if (!counted) manager.seedCount++;
             counted = true;
-            interactionText.SetActive(false); // Hide text
-            Destroy(gameObject); // Destroy this trigger object
+            interactionText.SetActive(false); 
+            Destroy(gameObject); 
             manager.seedCountText.SetActive(true);
-            Debug.Log("seed " + manager.seedCount);
         }
     }
 

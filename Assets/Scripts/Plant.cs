@@ -3,23 +3,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-//using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
+/*
+ * Interactive planting spaces require seeds and water to generate platform steps.
+ * Provides feedback when resources are insufficient.
+ */
 public class Plant : MonoBehaviour
 {
+    // UI Elements
     [SerializeField] GameObject interactionText;
     [SerializeField] GameObject notEnoughSeed;
     [SerializeField] GameObject notEnoughWater;
     [SerializeField] GameObject notEnough;
+    [SerializeField] GameObject button;
+
+    // Game Elements
     [SerializeField] GameManager manager;
     [SerializeField] List<GameObject> steps;
     [SerializeField] GameObject bucket;
-    [SerializeField] GameObject button;
+
     private bool planted = false;
 
     private void Start()
     {
-        interactionText.SetActive(false); // Hide on start
+        interactionText.SetActive(false);
         planted = false;
 }
 
@@ -32,6 +39,7 @@ public class Plant : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.R))
         {
+            // Check if player has required resources
             if (manager.seedCount >= 1 && manager.bucketCount >= 1)
             {
                 StartCoroutine(GenerateSteps());
@@ -39,28 +47,41 @@ public class Plant : MonoBehaviour
             }
             else
             {
-                if (!planted)
-                {
-                    interactionText.SetActive(false);
-                    if (manager.seedCount < 1 && manager.bucketCount < 1)
-                        notEnough.SetActive(true);
-                    else if (manager.seedCount < 1)
-                        notEnoughSeed.SetActive(true);
-                    else
-                        notEnoughWater.SetActive(true);
-                    button.SetActive(true);
-                }
+                ShowInsufficientResourcesFeedback();
             }
-            
         }
     }
 
+    private void ShowInsufficientResourcesFeedback()
+    {
+        if (!planted)
+        {
+            interactionText.SetActive(false);
+
+            // Display appropriate error message
+            if (manager.seedCount < 1 && manager.bucketCount < 1)
+                notEnough.SetActive(true);
+            else if (manager.seedCount < 1)
+                notEnoughSeed.SetActive(true);
+            else
+                notEnoughWater.SetActive(true);
+
+            button.SetActive(true);
+        }
+    }
+
+    /*
+     * Sequentially activates platform steps with animation delay.
+     * Consumes one seed and one bucket of water.
+     */
     private IEnumerator GenerateSteps()
     {
         foreach(GameObject step in steps)
         {
             step.SetActive(true);
             yield return new WaitForSeconds(.2f);
+
+            // Reset resources after steps are generated
             if (planted)
             {
                 manager.seedCount--;

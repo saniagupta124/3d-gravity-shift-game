@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/* Controls door visibility by toggling between different model states.
+ * Shows one model while hiding others when player exits trigger zone.
+ */
 public class Door3 : MonoBehaviour
 {
     [SerializeField] GameObject modelShow;
@@ -12,7 +15,6 @@ public class Door3 : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        //NormGrav();
         modelShow.SetActive(true);
         modelHide1.SetActive(false);
         modelHide2.SetActive(false);

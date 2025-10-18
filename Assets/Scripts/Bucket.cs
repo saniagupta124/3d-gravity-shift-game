@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+/*
+ * Collectible bucket item that increments the player's bucket count on interaction.
+ */
 public class Bucket : MonoBehaviour
 {
     [SerializeField] GameObject interactionText;
@@ -11,7 +13,7 @@ public class Bucket : MonoBehaviour
 
     private void Start()
     {
-        interactionText.SetActive(false); // Hide on start
+        interactionText.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -25,8 +27,8 @@ public class Bucket : MonoBehaviour
         {
             if (!counted) manager.bucketCount++;
             counted = true;
-            interactionText.SetActive(false); // Hide text
-            Destroy(gameObject); // Destroy this trigger object
+            interactionText.SetActive(false); 
+            Destroy(gameObject);
             manager.bucketCountText.SetActive(true);
             Debug.Log("bucket " + manager.bucketCount);
         }

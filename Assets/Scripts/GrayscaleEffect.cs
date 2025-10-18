@@ -2,6 +2,11 @@ using UnityEngine;
 
 [ExecuteInEditMode]
 [RequireComponent(typeof(Camera))]
+
+/*
+ * Post-processing effect that applies adjustable grayscale filter to camera output.
+ * Used for visual storytelling (e.g., transitioning from desaturated to full color).
+ */
 public class GrayscaleEffect : MonoBehaviour
 {
     public Material material;

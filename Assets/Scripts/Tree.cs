@@ -3,6 +3,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/*
+ * Handles player interaction with the tree object for watering mechanic.
+ * Transitions from grayscale to color upon successful watering.
+ */
 public class Tree : MonoBehaviour
 {
     [SerializeField] GameObject interactionText;
@@ -12,7 +16,6 @@ public class Tree : MonoBehaviour
     [SerializeField] GameObject notEnoughWater;
     [SerializeField] GameObject button;
 
-    // Reference to the GrayscaleEffect component
     [SerializeField] GrayscaleEffect grayscaleEffect;
     private bool isGrayscaleOff = false;
 
@@ -31,11 +34,11 @@ public class Tree : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.R))
         {
+            // Require 2 buckets of water to plant the tree
             if (manager.bucketCount >= 2)
             {
                 planted = true;
 
-                // Start the gradual transition to remove grayscale effect
                 if (!isGrayscaleOff)
                 {
                     StartCoroutine(GraduallyRemoveGrayscale());
@@ -47,6 +50,7 @@ public class Tree : MonoBehaviour
             {
                 if (!planted)
                 {
+                    // Show feedback for insufficient water 
                     interactionText.SetActive(false);
                     if (manager.bucketCount < 1)
                         notEnoughWater.SetActive(true);
@@ -64,12 +68,15 @@ public class Tree : MonoBehaviour
         planted = true;
     }
 
-    // Coroutine to gradually remove grayscale effect
+    /*
+     * Smoothly transitions from grayscale to full color over 2 seconds using 
+     * linear interpolation on the grayscale blend value.
+     */
     private IEnumerator GraduallyRemoveGrayscale()
     {
         interactionText.SetActive(false);
         float targetBlend = 0f;
-        float duration = 2f; // Duration of the transition
+        float duration = 2f;
         float currentBlend = grayscaleEffect.blend;
         float timeElapsed = 0f;
 
@@ -80,7 +87,7 @@ public class Tree : MonoBehaviour
             yield return null;
         }
 
-        grayscaleEffect.blend = targetBlend; // Ensure it reaches exactly 0
+        grayscaleEffect.blend = targetBlend;
     }
 
     public IEnumerator RestartGame()
