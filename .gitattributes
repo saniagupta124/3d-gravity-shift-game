@@ -1,3 +1,8 @@
 *.exe filter=lfs diff=lfs merge=lfs -text
 *.dll filter=lfs diff=lfs merge=lfs -text
 *.data filter=lfs diff=lfs merge=lfs -text
+*.shader linguist-vendored
+*.hlsl linguist-vendored
+Assets/Shaders/* linguist-vendored
+Packages/* linguist-vendored
+
